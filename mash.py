@@ -35,18 +35,19 @@ def mashup(**kwargs):
     modifier = ''
     
     if "origin" in kwargs and not kwargs['origin'] == '':
-        origin = kwargs[origin]
+        origin = kwargs['origin']
     else:
-        origin = __random_summary()
+        origin = __random_summary().decode("utf-8")
         
     if "modifier" in kwargs and not kwargs['modifier'] == '':
-        modifier = kwargs[modifier]
+        print(modifier)
+        modifier = kwargs['modifier']
     else:
-        modifier = __random_summary()
+        modifier = __random_summary().decode("utf-8")
 
     nlp = spacy.load('en_core_web_sm')
-    doc_origin = nlp(origin.decode("utf-8"))
-    doc_modifier = nlp(modifier.decode("utf-8"))
+    doc_origin = nlp(origin)
+    doc_modifier = nlp(modifier)
 
     all_words = []
 
@@ -65,6 +66,4 @@ def mashup(**kwargs):
         str += sub;
         if token.whitespace_:
             str += ' '
-    return (origin, modifier, str.encode("utf-8"))
-
-print(mashup())
+    return (origin, modifier, str)
