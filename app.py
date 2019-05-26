@@ -9,20 +9,20 @@ from flask_cors import CORS, cross_origin
 
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-cors = CORS(app, resources={r"/api/mash": {"origins": "http://localhost:3000"}})
+cors = CORS(app, resources={r"/api/mash": {"origins": "*"}})
 
 @app.route('/',methods=['GET'])
 def index():
-    return render_template("main_page.html")
+    return render_template("index.html")
 
 @app.route('/api/mash', methods=['POST'])
 def madlibs():
     o = request.get_json(force=True)['original']
     m = request.get_json(force=True)['modifier']
-    res = mash.mashup(original=o, modifier=m)
+    c = request.get_json(force=True)['craziness']
+    res = mash.mashup(original=o, modifier=m, craziness=c)
     return jsonify(original=res[0], modifier=res[1], result=res[2])
     
 if __name__ == '__main__':
