@@ -2,9 +2,9 @@ import spacy
 import wikipedia
 import random
 from flask import jsonify
-import en_core_web_lg
+import en_core_web_md
 
-nlp = en_core_web_lg.load()
+nlp = en_core_web_md.load()
 
 def __random_summary(min, max):
     random = wikipedia.random(10)
