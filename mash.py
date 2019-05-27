@@ -110,4 +110,4 @@ def mashup(**kwargs):
     best = min(sentences, key=lambda x: __get_similarity(x, doc_original, doc_modifier))
     return (original, modifier, best.text)
 	
-print(mashup()[2].encode('utf-8'))
+#print(mashup()[2].encode('utf-8'))
