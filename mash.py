@@ -2,8 +2,9 @@ import spacy
 import wikipedia
 import random
 from flask import jsonify
-import en_core_web_md
+import en_core_web_sm
 
+nlp = en_core_web_sm.load()
 
 def __random_summary(min, max):
     random = wikipedia.random(1)
@@ -43,7 +44,7 @@ def __remove_dup(list):
 
 def mashup(**kwargs):
     print("starting")
-    original = __random_summary(0, 1000).decode('utf-8')
+    original = __random_summary(300, 800).decode('utf-8')
     print("finished fetching o: length =", len(original))
     modifier = __random_summary(len(original), len(original)+200).decode('utf-8')
     print("finished fetching m: length =", len(modifier))
@@ -57,8 +58,6 @@ def mashup(**kwargs):
 
     if 'craziness' in kwargs and not kwargs['craziness'] == '':
         craziness = kwargs['craziness']
-
-    nlp = en_core_web_md.load()
     doc_origin = nlp(original)
     doc_modifier = nlp(modifier)
 
