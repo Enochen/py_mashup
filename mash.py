@@ -2,7 +2,7 @@ import spacy
 import wikipedia
 import random
 from flask import jsonify
-import en_core_web_lg
+import en_core_web_md
 
 
 def __random_summary(min, max):
@@ -58,7 +58,7 @@ def mashup(**kwargs):
     if 'craziness' in kwargs and not kwargs['craziness'] == '':
         craziness = kwargs['craziness']
 
-    nlp = en_core_web_lg.load()
+    nlp = en_core_web_md.load()
     doc_origin = nlp(original)
     doc_modifier = nlp(modifier)
 
