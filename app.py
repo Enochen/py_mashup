@@ -11,11 +11,15 @@ from flask_cors import CORS, cross_origin
 app = Flask(__name__)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-cors = CORS(app, resources={r"/api/mash": {"origins": "*"}})
+cors = CORS(app, resources={r"/api/mash": {"origins": "*"},r"/api/wiki": {"origins": "*"}})
 
 @app.route('/',methods=['GET'])
 def index():
     return render_template("index.html")
+
+@app.route('/api/wiki', methods=['POST'])
+def wiki():
+    return jsonify(result=mash.random_wiki())
 
 @app.route('/api/mash', methods=['POST'])
 def madlibs():

@@ -16,7 +16,7 @@ def __random_summary(min, max):
                 break
     except:
         return __random_summary(min, max)
-    return result
+    return result.decode('utf-8')
 
 
 def __search(list, token):
@@ -64,24 +64,37 @@ def __get_similarity(doc1, doc2, doc3):
     print("Similarity 1-2-3:", s12 + s23)
     print()
     return s12 + s23;
+    
+def __diff(doc1, doc2):
+    d = 0
+    print(len(doc1), 'vs', len(doc2))
+    for i in range(len(doc1)):
+        if(doc1[i].tag_ != doc2[i].tag_):
+            d += 1
+    return d
 
-
+def random_wiki():
+    return __random_summary(0, 1500)
 
 def mashup(**kwargs):
     print("starting")
-    original = __random_summary(500, 1000).decode('utf-8')
-    #original = __random_summary(0, 1500).decode('utf-8')
-    print("finished fetching o: length =", len(original))
-    #modifier = __random_summary(len(original)-100, len(original)+200).decode('utf-8')
-    modifier = __random_summary(len(original), 1500).decode('utf-8')
-    print("finished fetching m: length =", len(modifier))
+    original = ''
+    modifier = ''
     craziness = 100
 
     if 'original' in kwargs and not kwargs['original'] == '':
         original = kwargs['original']
+    else: 
+        original = __random_summary(500, 1000)
+        #original = __random_summary(0, 1500)
+        print("finished fetching o: length =", len(original))
 
     if 'modifier' in kwargs and not kwargs['modifier'] == '':
         modifier = kwargs['modifier']
+    else:
+        #modifier = __random_summary(len(original)-100, len(original)+200)
+        modifier = __random_summary(len(original), 1500)
+        print("finished fetching m: length =", len(modifier))
 
     if 'craziness' in kwargs and not kwargs['craziness'] == '':
         craziness = kwargs['craziness']
@@ -105,9 +118,9 @@ def mashup(**kwargs):
     print()
     
     sentences = []
-    for i in range(10):
+    for i in range(100):
         sentences.append(__gen_sen(doc_original, words, craziness))
-    best = min(sentences, key=lambda x: __get_similarity(x, doc_original, doc_modifier))
+    best = max(sentences, key=lambda x: doc_original.similarity(x))
     return (original, modifier, best.text)
 	
 #print(mashup()[2].encode('utf-8'))
